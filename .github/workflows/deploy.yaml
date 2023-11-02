@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: ["main"]
   
+permissions:
+  id-token: write
+  contents: read
+    
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -24,4 +28,11 @@ jobs:
           pip install -r requirements.txt
       - name: Build Docker Compose
         run: docker-compose
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::641022061021:role/adamRole
+          role-session-name: sampleSessionName
+          aws-region: ap-northeast-2
 
